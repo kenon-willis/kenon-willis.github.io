@@ -1,0 +1,333 @@
+<!Doctype: HTML w/ Processing>
+
+
+
+
+
+
+
+<html>
+
+
+
+
+
+
+
+  <head>
+
+
+
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+
+      <title>Processing Demo</title>
+
+
+
+      <script type="text/javascript" src="js/processing.js"></script>
+
+
+
+  </head>
+
+
+
+  
+
+
+
+  <body>
+
+
+
+    <h1>Ball Bounce!</h1>
+
+
+
+    <p>ADD DESCRIPTION HERE</p>
+
+
+
+    
+
+
+
+    <script type="text/processing">
+
+
+
+    
+
+
+
+      //global variables and objects
+
+Ball[] ballArray;
+
+
+
+int redValue;                               //redValue of background
+
+int redValueChange;                        //how much the redValue will change by each draw method
+
+public void setup(){
+
+ 
+
+  size(1200,800);                         //size of the window
+
+  background(100,100,100);                //creates a gray background
+
+  
+
+  ballArray = new Ball[50];
+
+  
+
+  for(int i=0; i<ballArray.length; i++){
+
+    ballArray[i] = new Ball();             //creates a new ball object
+
+  }
+
+  
+
+  
+
+  redValueChange=1;                        //sets the speed of color change of the background
+
+  
+
+}
+
+void draw(){
+
+  if(redValue>255 || redValue<0){          //at the top and bottom of red spectrum, reverse color change direction
+
+    redValueChange*=-1;
+
+  }
+
+  redValue+=redValueChange;
+
+  background(redValue,100,100);            //set the background color
+
+ 
+
+ 
+
+  for(int i=0; i<ballArray.length; i++){              //iterate through each ball in the array
+
+    ballArray[i].update();                           //move the ball for each ball in the array
+
+    ballArray[i].bounceAtEdge();                    //check the edge for each ball in the array
+
+    ballArray[i].show();                            //show each ball in the array
+
+  }
+
+  
+
+  //foreach loop (instead of for loop) to go through each item in an array
+
+  for(Ball b1: ballArray){
+
+    for(Ball b2: ballArray){    //check each Ball against every other Ball
+
+      
+
+      if(b1!=b2){
+
+        b1.ballCollision(b2);
+
+      }
+
+      
+
+      
+
+    }
+
+    
+
+  }
+
+  
+
+  
+
+  public class Ball{
+
+ 
+
+  //instance variables
+
+  float x;
+
+  float y;
+
+  float size;
+
+  float xVel;
+
+  float yVel;
+
+  float r,g,b,o;                                   //red,green,blue,opacity
+
+ 
+
+ 
+
+  //constructor, runs each time a ball is constructed
+
+  public Ball(){
+
+    
+
+    x = random(0,width);                          //random x-coordinate on screen for each ball
+
+    y = random(0,height);                         //random y-coordinate
+
+    
+
+    
+
+    size=random(15,40);                                         //size of ball
+
+    
+
+    
+
+    
+
+    yVel=random(3,9);                            //speed in vertical direction
+
+    xVel=random(3,9);                            //speed in vertical direction
+
+    
+
+    
+
+    r=random(0,255);                            //set the color and opacity randomly for each ball when it is constructed
+
+    g=random(0,255);
+
+    b=random(0,255);
+
+    o=random(100,255);
+
+  }
+
+  
+
+  
+
+  public void show(){
+
+    ellipse(x,y,size,size);                           //draws an ellipse at x,y location, size is the width and height therefore a circle is drawn
+
+    fill(r,g,b,o);                              //fills each ball with its own specific color and opacity
+
+  }
+
+ 
+
+  public void update(){
+
+    x+=xVel;                                    //updates the ball to a new x and y position
+
+    y+=yVel;
+
+  }
+
+  
+
+  public void bounceAtEdge(){                   //if ball hits edge of screen, change its appropriate direction and update the position
+
+    if( x>width || x<0 ){
+
+      xVel*=-1;
+
+      update();
+
+    }
+
+    if( y>height || y<0){
+
+      yVel*=-1;
+
+      update();
+
+    }
+
+   
+
+  }
+
+  
+
+  //check for collision with other balls
+
+  public void ballCollision(Ball other){
+
+    
+
+    //distance formula is less than the sum of two radii, means there is a collision
+
+    if(sqrt( pow((x-other.x),2) + pow((y-other.y),2) ) <= ( size/2 + other.size/2 )){
+
+      
+
+      xVel*=-1;
+
+      other.yVel*=-1;
+
+      
+
+    }
+
+    
+
+    
+
+  }
+
+  
+
+
+
+}
+
+ 
+
+}
+
+
+
+
+
+
+
+    </script>
+
+
+
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+
+
+
+    
+
+
+
+  </body>
+
+
+
+  
+
+
+
+</html>
