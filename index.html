@@ -30,110 +30,72 @@
 
     
 
-      
-Hand hourHand;
-Hand minHand;
-Hand secHand;
+      float circleSize;
+boolean red, green, blue;
+float r,g,b;
 
-float hour;
-float min;
 
-int secRadius=375;
-int minRadius=325;
-int hourRadius=150;
-int numRadius = 370;
 
 void setup(){
-  size(800,800);
-  hourHand = new Hand();     //create the three Hand objects
-  minHand = new Hand();
-  secHand = new Hand();
+  size(1200,800);
+  setupOrClear();
+  circleSize = 30;
+}
+
+void setupOrClear(){
+  background(0); //black
+  fill(255);      //white for text
+  textSize(30);
+  text("Hover and move your mouse",10,40);
+  rect(width-200, 40, 150,40);
+  fill(0,0,255);
+  text("Clear",width-170,70);
+  red = false;
+  green = false;
+  blue = false;
   
-  PFont myFont = createFont("Georgia", 100); // only needed if using numbers around the clock
-  textFont(myFont);
 }
 
 void draw(){
-  background(0);      //black background
+  fill(r,g,b);
   
-  
-  
-  setNumbersOrDots();       //sets the 12 dots or numbers around the clock
-  
-  min= minute()+second()/60.0;   //so the seconds will slightly push the min hand forward
-  hour = hour() + min/60.0;      //so the hour hand will slightly adjust with the min hand movement
-  
-  //min= minute();     //comment these two lines in and the lines above comment those out,
-  //hour = hour();     //and the minute and hour hand will not continuously move, they will only "jump" when their value changes
-  
-  
-  stroke(255);       //clock hand color
-  strokeWeight(5);   //set the second hand stoke weight
-  
-  
-  secHand.draw(width/2-secRadius*cos(2*PI*(second()+15)/60.0),height/2-secRadius*sin(2*PI*(second()+15)/60.0));
-  
-  strokeWeight(10);  //set the stroke weight for the hour and min hands
-  minHand.draw(width/2-minRadius*cos(2*PI*(min+15)/60.0),height/2-minRadius*sin(2*PI*(min+15)/60.0));
-  hourHand.draw(width/2-hourRadius*cos(2*PI*((hour+3)%12)/12.0),height/2-hourRadius*sin(2*PI*((hour+3)%12)/12.0));
-  
-  strokeWeight(20);            //for the point in the center of the clock
-  point(width/2,height/2);
-  
-  //make a triangle around the end of each hand
-  //stroke(255,0,0);
-  //line(  width/2-secRadius*cos(2*PI*(second()+15)/60.0),height/2-secRadius*sin(2*PI*(second()+15)/60.0)   ,   width/2-minRadius*cos(2*PI*(min+15)/60.0),height/2-minRadius*sin(2*PI*(min+15)/60.0)   );
-  //line(  width/2-secRadius*cos(2*PI*(second()+15)/60.0),height/2-secRadius*sin(2*PI*(second()+15)/60.0)   ,   width/2-hourRadius*cos(2*PI*((hour+3)%12)/12.0),height/2-hourRadius*sin(2*PI*((hour+3)%12)/12.0)  );
-  //line(  width/2-hourRadius*cos(2*PI*((hour+3)%12)/12.0),height/2-hourRadius*sin(2*PI*((hour+3)%12)/12.0)  ,   width/2-minRadius*cos(2*PI*(min+15)/60.0),height/2-minRadius*sin(2*PI*(min+15)/60.0)   );
-}
-
-
-void setNumbersOrDots(){
-  stroke(0,255,0);   //controls the color of the 12 points around the clock
-  strokeWeight(20);  //strokeweight for 12 points
-  
-  //put a point at each of the 12 hour spots using a for loop
-  for(int i=0; i<60; i+=5){
-    point(width/2-numRadius*cos(2*PI*i/60.0),height/2-numRadius*sin(2*PI*i/60.0));
+  if(mouseY>100){    //leave a restricted area at top of screen
+    ellipse(mouseX,mouseY,circleSize,circleSize);
   }
   
+  if(mouseX>width-200 && mouseX<width-50 && mouseY>40 && mouseY<80){ //in clear button
+    fill(0,255,0);
+    text("Clear",width-170,70);
+  }
+  else{                    //not hovering over clear button
+    fill(0,0,255);
+    text("Clear",width-170,70);
+  }
   
-  //show the numbers around the clock for each hour
-  /*text("12",width/2-numRadius*cos(2*PI*15/60.0),height/2-numRadius*sin(2*PI*15/60.0));
-  text("1",width/2-numRadius*cos(2*PI*20/60.0),height/2-numRadius*sin(2*PI*20/60.0));
-  text("2",width/2-numRadius*cos(2*PI*25/60.0),height/2-numRadius*sin(2*PI*25/60.0));
-  text("3",width/2-numRadius*cos(2*PI*30/60.0),height/2-numRadius*sin(2*PI*30/60.0));
-  text("4",width/2-numRadius*cos(2*PI*35/60.0),height/2-numRadius*sin(2*PI*35/60.0));
-  text("5",width/2-numRadius*cos(2*PI*40/60.0),height/2-numRadius*sin(2*PI*40/60.0));
-  text("6",width/2-numRadius*cos(2*PI*45/60.0),height/2-numRadius*sin(2*PI*45/60.0));
-  text("7",width/2-numRadius*cos(2*PI*50/60.0),height/2-numRadius*sin(2*PI*50/60.0));
-  text("8",width/2-numRadius*cos(2*PI*55/60.0),height/2-numRadius*sin(2*PI*55/60.0));
-  text("9",width/2-numRadius*cos(2*PI*0/60.0),height/2-numRadius*sin(2*PI*0/60.0));
-  text("10",width/2-numRadius*cos(2*PI*5/60.0),height/2-numRadius*sin(2*PI*5/60.0));
-  text("11",width/2-numRadius*cos(2*PI*10/60.0),height/2-numRadius*sin(2*PI*10/60.0));
-  */
-  
-  
-
-  
-}
-
-public class Hand{
-  
-  int x1=0;
-  int y1=0;
-
-  
-  public Hand(){
-    x1=width/2;
-    y1=height/2;
+  if(keyPressed){
    
+      if(keyCode==UP){
+        circleSize=100;
+      }
+      else if(keyCode==DOWN){
+        circleSize-=5;
+      }
+      
+      if(key=='r'){   //toggle the red boolean with the "r" key
+        red=!red;
+      }
 
-  }
+  }  //end of keyPressed
   
-  void draw(float a,float b){
-    
-    line(x1,y1,a,b);
+  if(red){
+     r = random(0,255);             //add red to color spectrum
+     fill(255,0,0);                  //red square top right of screen
+     rect(width-300,50,50,50);
+  }
+  else{                              //erase red square with black square
+    r = 0;                          //no red in our spectrum
+    fill(0);
+    rect(width-300,50,50,50);
     
   }
   
@@ -141,6 +103,8 @@ public class Hand{
   
   
 }
+
+ 
   
   
   
