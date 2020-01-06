@@ -1,0 +1,237 @@
+<!Doctype: HTML w/ Processing>
+
+
+
+
+
+
+
+<html>
+
+
+
+
+
+
+
+  <head>
+
+
+
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+
+      <title>Processing Demo</title>
+
+
+
+      <script type="text/javascript" src="js/processing.js"></script>
+
+
+
+  </head>
+
+
+
+  
+
+
+
+  <body>
+
+
+
+    <h1>PUT YOUR TITLE HERE</h1>
+
+
+
+    <p>ADD DESCRIPTION HERE</p>
+
+
+
+    
+
+
+
+    <script type="text/processing">
+
+
+
+    
+
+
+
+      float circleSize;
+
+boolean red, green, blue;
+
+float r,g,b;
+
+
+
+
+
+
+
+void setup(){
+
+  size(1200,800);
+
+  setupOrClear();
+
+  circleSize = 30;
+
+}
+
+
+
+void setupOrClear(){
+
+  background(0); //black
+
+  fill(255);      //white for text
+
+  textSize(30);
+
+  text("Hover and move your mouse",10,40);
+
+  rect(width-200, 40, 150,40);
+
+  fill(0,0,255);
+
+  text("Clear",width-170,70);
+
+  red = false;
+
+  green = false;
+
+  blue = false;
+
+  
+
+}
+
+
+
+void draw(){
+
+  fill(r,g,b);
+
+  
+
+  if(mouseY>100){    //leave a restricted area at top of screen
+
+    ellipse(mouseX,mouseY,circleSize,circleSize);
+
+  }
+
+  
+
+  if(mouseX>width-200 && mouseX<width-50 && mouseY>40 && mouseY<80){ //in clear button
+
+    fill(0,255,0);
+
+    text("Clear",width-170,70);
+
+  }
+
+  else{                    //not hovering over clear button
+
+    fill(0,0,255);
+
+    text("Clear",width-170,70);
+
+  }
+
+  
+
+  if(keyPressed){
+
+   
+
+      if(keyCode==UP){
+
+        circleSize=100;
+
+      }
+
+      else if(keyCode==DOWN){
+
+        circleSize-=5;
+
+      }
+
+      
+
+      if(key=='r'){   //toggle the red boolean with the "r" key
+
+        red=!red;
+
+      }
+
+
+
+  }  //end of keyPressed
+
+  
+
+  if(red){
+
+     r = random(0,255);             //add red to color spectrum
+
+     fill(255,0,0);                  //red square top right of screen
+
+     rect(width-300,50,50,50);
+
+  }
+
+  else{                              //erase red square with black square
+
+    r = 0;                          //no red in our spectrum
+
+    fill(0);
+
+    rect(width-300,50,50,50);
+
+    
+
+  }
+
+  
+
+  
+
+  
+
+  
+
+}
+
+
+
+
+
+
+
+    </script>
+
+
+
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+
+
+
+    
+
+
+
+  </body>
+
+
+
+  
+
+
+
+</html>
